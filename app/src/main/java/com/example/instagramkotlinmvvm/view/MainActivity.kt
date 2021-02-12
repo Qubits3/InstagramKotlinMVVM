@@ -1,7 +1,8 @@
-package com.example.instagramkotlinmvvm
+package com.example.instagramkotlinmvvm.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.instagramkotlinmvvm.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
