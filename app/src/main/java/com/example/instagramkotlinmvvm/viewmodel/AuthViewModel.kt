@@ -4,6 +4,7 @@ import android.app.Application
 import android.view.View
 import androidx.navigation.Navigation
 import com.example.instagramkotlinmvvm.services.AuthAPIService
+import com.example.instagramkotlinmvvm.util.print
 import com.example.instagramkotlinmvvm.util.showErrorToUser
 import com.example.instagramkotlinmvvm.view.AuthFragmentDirections
 import com.google.gson.JsonObject
@@ -25,12 +26,13 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
                     override fun onSuccess(t: JsonObject) {
-                        val action = AuthFragmentDirections.actionLoginFragmentToFeedFragment()
+
+                        val action = AuthFragmentDirections.actionLoginFragmentToFeedFragment(t.get("localId").asString)
                         Navigation.findNavController(view).navigate(action)
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
+                        e.print()
                         e.showErrorToUser(view.context)
                     }
                 })
@@ -45,7 +47,8 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
                     override fun onSuccess(t: JsonObject) {
-                        val action = AuthFragmentDirections.actionLoginFragmentToFeedFragment()
+
+                        val action = AuthFragmentDirections.actionLoginFragmentToFeedFragment(t.get("localId").asString)
                         Navigation.findNavController(view).navigate(action)
                     }
 

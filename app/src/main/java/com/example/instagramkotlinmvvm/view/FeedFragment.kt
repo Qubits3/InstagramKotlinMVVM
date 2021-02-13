@@ -13,6 +13,7 @@ import com.example.instagramkotlinmvvm.databinding.FragmentFeedBinding
 import com.example.instagramkotlinmvvm.util.print
 import com.example.instagramkotlinmvvm.viewmodel.AuthViewModel
 import com.example.instagramkotlinmvvm.viewmodel.FeedViewModel
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_feed.*
 
 
@@ -39,8 +40,12 @@ class FeedFragment : Fragment() {
 
         when (item.itemId) {
             R.id.feed_menu_post -> {
-                val action = FeedFragmentDirections.actionFeedFragmentToPostFragment()
-                view?.let { Navigation.findNavController(it).navigate(action) }
+                arguments?.let { bundle ->
+                    val action = FeedFragmentDirections.actionFeedFragmentToPostFragment(
+                        FeedFragmentArgs.fromBundle(bundle).userUIDFeed
+                    )
+                    view?.let { Navigation.findNavController(it).navigate(action) }
+                }
             }
         }
 
@@ -63,10 +68,29 @@ class FeedFragment : Fragment() {
         feedViewModel = ViewModelProviders.of(this).get(FeedViewModel::class.java)
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
 
+        feedViewModel.getPosts()
+
         postList.layoutManager = LinearLayoutManager(context)
         postList.adapter = postAdapter
 
-        feedViewModel.postImage()
+        dataBinding.swipeRefreshLayout.setOnRefreshListener {
+
+        }
+
+        val database = FirebaseDatabase.getInstance().reference
+        val myRef = database.ref
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.print()
+                feedViewModel.getPosts()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                error.print()
+            }
+
+        })
 
         observeLiveData()
     }

@@ -9,7 +9,7 @@
         android:id="@+id/loginFragment"
         android:name="com.example.instagramkotlinmvvm.view.AuthFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_auth" >
         <action
             android:id="@+id/action_loginFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_feedFragment_to_postFragment"
             app:destination="@id/postFragment" />
+        <argument
+            android:name="userUIDFeed"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/postFragment"
@@ -33,5 +36,8 @@
         <action
             android:id="@+id/action_postFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
+        <argument
+            android:name="userUIDPost"
+            app:argType="string" />
     </fragment>
 </navigation>

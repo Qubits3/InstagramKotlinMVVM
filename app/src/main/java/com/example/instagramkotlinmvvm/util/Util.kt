@@ -12,13 +12,13 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.HttpException
 
-fun Toast.print(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+fun Any?.print(prefix: String = ""): Any? {
+    println("$prefix $this")
+    return this
 }
 
-fun Any.print(): Any {
-    println(this)
-    return this
+fun Throwable.printError() {
+    println(this.localizedMessage)
 }
 
 fun Throwable.showErrorToUser(context: Context) {

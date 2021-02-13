@@ -8,14 +8,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.instagramkotlinmvvm.R
-import com.example.instagramkotlinmvvm.databinding.FragmentLoginBinding
+import com.example.instagramkotlinmvvm.databinding.FragmentAuthBinding
 import com.example.instagramkotlinmvvm.viewmodel.AuthViewModel
 import com.google.gson.JsonParser
 
 class AuthFragment : Fragment() {
 
     private lateinit var authViewModel: AuthViewModel
-    private lateinit var dataBinding: FragmentLoginBinding
+    private lateinit var dataBinding: FragmentAuthBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class AuthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_auth, container, false)
 
         return dataBinding.root
     }
@@ -52,6 +52,8 @@ class AuthFragment : Fragment() {
 
         authViewModel.signIn(view, jsonObject)
         //
+
+
 
     }
 

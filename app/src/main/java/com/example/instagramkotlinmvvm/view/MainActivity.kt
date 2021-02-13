@@ -3,6 +3,7 @@ package com.example.instagramkotlinmvvm.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.instagramkotlinmvvm.R
+import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
