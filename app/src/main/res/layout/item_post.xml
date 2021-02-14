@@ -31,6 +31,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:contentDescription="@string/account_image"
+                android:downloadUrl="@{post.postAccountImageUrl}"
                 android:src="@drawable/ic_launcher_foreground" />
 
             <TextView
@@ -57,9 +58,9 @@
                 android:id="@+id/postImage"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:scaleType="center"
                 android:contentDescription="@string/main_image"
                 android:downloadUrl="@{post.postUrl}"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_launcher_foreground" />
 
             <TextView

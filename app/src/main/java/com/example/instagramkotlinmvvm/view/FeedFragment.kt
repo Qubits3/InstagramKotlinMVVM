@@ -41,8 +41,11 @@ class FeedFragment : Fragment() {
         when (item.itemId) {
             R.id.feed_menu_post -> {
                 arguments?.let { bundle ->
+                    val args = FeedFragmentArgs.fromBundle(bundle)
                     val action = FeedFragmentDirections.actionFeedFragmentToPostFragment(
-                        FeedFragmentArgs.fromBundle(bundle).userUIDFeed
+                        args.userUIDFeed,
+                        args.userAccountNameFeed,
+                        args.userAccountProfileImageUrlFeed
                     )
                     view?.let { Navigation.findNavController(it).navigate(action) }
                 }
@@ -67,8 +70,6 @@ class FeedFragment : Fragment() {
 
         feedViewModel = ViewModelProviders.of(this).get(FeedViewModel::class.java)
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
-
-        feedViewModel.getPosts()
 
         postList.layoutManager = LinearLayoutManager(context)
         postList.adapter = postAdapter

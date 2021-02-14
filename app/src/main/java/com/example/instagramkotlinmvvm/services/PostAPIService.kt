@@ -1,5 +1,6 @@
 package com.example.instagramkotlinmvvm.services
 
+import com.example.instagramkotlinmvvm.model.Auth
 import com.example.instagramkotlinmvvm.model.Post
 import com.google.gson.JsonObject
 import io.reactivex.Observable
@@ -20,12 +21,20 @@ class PostAPIService {
         .build()
         .create(PostAPI::class.java)
 
-    fun post(userUID: String, post: Post): Single<JsonObject> {
-        return api.post(userUID, post)
+    fun post(userUID: String, uuid: String, post: Post): Single<JsonObject> {
+        return api.post(userUID, uuid, post)
     }
 
-    fun getPosts(): Observable<JsonObject> {
+    fun getPosts(): Observable<JsonObject?> {
         return api.getPosts()
+    }
+
+    fun uploadAccountInfo(userUID: String, auth: Auth): Single<JsonObject> {
+        return api.uploadAccountInfo(userUID, auth)
+    }
+
+    fun getAccountInfo(userUID: String): Single<JsonObject> {
+        return api.getAccountInfo(userUID)
     }
 
 }

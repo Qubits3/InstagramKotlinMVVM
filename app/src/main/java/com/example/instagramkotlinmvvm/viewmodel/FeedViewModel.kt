@@ -29,14 +29,17 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<JsonObject>() {
                     override fun onNext(database: JsonObject) {
-                        database.keySet().forEach { userUID ->
-                            val userUIDs = database.get(userUID).asJsonObject
-                            userUIDs.keySet().forEach { postUUID -> // Get UUIDs of the posts
+                        database.keySet().forEach { userUID ->                              //all database
+                            val accountInfoAndPosts = database.get(userUID).asJsonObject    //userUID children
+                            val postsDB = accountInfoAndPosts.get("posts")?.asJsonObject    //posts children
+                            postsDB?.keySet()?.forEach { postUUID -> // Get UUIDs of the posts
                                 list.add(Post(
-                                    userUIDs.get(postUUID).asJsonObject.get("postAccountName").asString,
-                                    userUIDs.get(postUUID).asJsonObject.get("postAccountImageUrl").asString,
-                                    userUIDs.get(postUUID).asJsonObject.get("postUrl").asString,
-                                    userUIDs.get(postUUID).asJsonObject.get("likeCount").asInt
+                                    postsDB.get(postUUID)?.asJsonObject?.get("postUuid")?.asString,
+                                    postsDB.get(postUUID)?.asJsonObject?.get("postAccountName")?.asString,
+                                    postsDB.get(postUUID)?.asJsonObject?.get("postAccountImageUrl")?.asString,
+                                    postsDB.get(postUUID).asJsonObject?.get("postUrl")?.asString,
+                                    postsDB.get(postUUID).asJsonObject?.get("likeCount")?.asInt,
+                                    postsDB.get(postUUID).asJsonObject?.get("timestamp")?.asString
                                 ))
                             }
 

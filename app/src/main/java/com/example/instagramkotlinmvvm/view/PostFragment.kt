@@ -26,11 +26,6 @@ class PostFragment : Fragment() {
     private lateinit var dataBinding: FragmentPostBinding
     private lateinit var viewModel: PostViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,7 +43,10 @@ class PostFragment : Fragment() {
 
         dataBinding.postButton.setOnClickListener {
             arguments?.let { bundle ->
-                val action = PostFragmentDirections.actionPostFragmentToFeedFragment(PostFragmentArgs.fromBundle(bundle).userUIDPost)
+                val args = PostFragmentArgs.fromBundle(bundle)
+                val action = PostFragmentDirections.actionPostFragmentToFeedFragment(
+                    args.userUIDPost, args.userAccountNamePost, args.userAccountProfileImageUrlPost
+                )
                 Navigation.findNavController(view).navigate(action)
             }
         }
@@ -59,16 +57,19 @@ class PostFragment : Fragment() {
 
         dataBinding.postButton.setOnClickListener {
             arguments?.let {
-                viewModel.uploadImage(PostFragmentArgs.fromBundle(it).userUIDPost)
+                val args = PostFragmentArgs.fromBundle(it)
+                viewModel.uploadImage(
+                    args.userUIDPost,
+                    args.userAccountNamePost,
+                    args.userAccountProfileImageUrlPost
+                )
 
-                val action = PostFragmentDirections.actionPostFragmentToFeedFragment(PostFragmentArgs.fromBundle(it).userUIDPost)
+                val action = PostFragmentDirections.actionPostFragmentToFeedFragment(
+                    args.userUIDPost, args.userAccountNamePost, args.userAccountProfileImageUrlPost
+                )
                 Navigation.findNavController(view).navigate(action)
             }
         }
-    }
-
-    private fun observeLiveData() {
-
     }
 
     private fun selectImage(view: View) {
@@ -110,7 +111,9 @@ class PostFragment : Fragment() {
         if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
             viewModel.selected = data.data!!
             try {
-                val bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, viewModel.selected)
+                val bitmap =
+                    MediaStore.Images.Media.getBitmap(context?.contentResolver, viewModel.selected)
+
                 dataBinding.postImageView.setImageBitmap(bitmap)
             } catch (e: IOException) {
                 e.printError()
@@ -119,7 +122,6 @@ class PostFragment : Fragment() {
 
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 
 
 }

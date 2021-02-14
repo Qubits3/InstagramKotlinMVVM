@@ -22,9 +22,9 @@ class PostViewModel(application: Application) : BaseViewModel(application) {
     private lateinit var storageReference: StorageReference
     lateinit var selected: Uri
 
-    fun uploadImage(userUID: String) {
+    fun uploadImage(userUID: String, postAccountName: String, postAccountImageUrl: String) {
 
-        val uuid = UUID.randomUUID()
+        val uuid = UUID.randomUUID().toString()
 
         storageReference = FirebaseStorage.getInstance().reference
 
@@ -39,11 +39,14 @@ class PostViewModel(application: Application) : BaseViewModel(application) {
                 profileImageRef.downloadUrl.addOnCompleteListener {
                     post(
                         userUID,
+                        uuid,
                         Post(
-                            "postAccountName",
-                            "postAccountImageUrl",
+                            uuid,
+                            postAccountName,
+                            postAccountImageUrl,
                             it.result.toString(),   // Get image url
-                            0
+                            0,
+                            System.nanoTime().toString()
                         )
                     )
                 }
@@ -51,9 +54,9 @@ class PostViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
-    private fun post(userUID: String, post: Post) {
+    private fun post(userUID: String, uuid: String, post: Post) {
         disposable.add(
-            postAPIService.post(userUID, post)
+            postAPIService.post(userUID, uuid, post)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
