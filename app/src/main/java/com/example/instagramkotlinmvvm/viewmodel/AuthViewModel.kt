@@ -19,6 +19,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.net.UnknownHostException
 import java.util.*
 
 class AuthViewModel(application: Application) : BaseViewModel(application) {
@@ -44,7 +46,8 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
 
         val image = "images/$uuid.jpg"
 
-        val newReference = storageReference.child(image)
+        val newReference =
+            storageReference.child(image)    // ToDo: Resim seçilmeyince null dönüyor resim seçilene kadar sign up butonu disable yapılacak
 
         newReference.putFile(selected).addOnSuccessListener {
 
@@ -54,8 +57,50 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
                 accountImageUrl = it.result.toString()
                 _signUp(view, payload, accountName, accountImageUrl, email)
             }
-
         }
+    }
+
+    fun signIn(
+        view: View,
+        payload: JsonObject
+    ) {
+
+        disposable.add(
+            authAPIService.signIn(payload)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
+                    override fun onSuccess(localId: JsonObject) {
+
+                        disposable.add(
+                            postAPIService.getAccountInfo(localId.get("localId").asString)
+                                .subscribeOn(Schedulers.newThread())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
+                                    override fun onSuccess(accountInfo: JsonObject) {
+                                        val action =
+                                            AuthFragmentDirections.actionLoginFragmentToFeedFragment(
+                                                localId.get("localId").asString,
+                                                accountInfo.get("accountName").asString,
+                                                accountInfo.get("accountImageUrl").asString
+                                            )
+                                        Navigation.findNavController(view).navigate(action)
+                                    }
+
+                                    override fun onError(e: Throwable) {
+                                        e.printStackTrace()
+                                    }
+
+                                })
+                        )
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        e.showErrorToUser(view.context)
+                    }
+                })
+        )
     }
 
     private fun uploadAccountInfo(userUID: String, auth: Auth) {
@@ -110,49 +155,6 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
 
                     override fun onError(e: Throwable) {
                         e.print()
-                        e.showErrorToUser(view.context)
-                    }
-                })
-        )
-    }
-
-    fun signIn(
-        view: View,
-        payload: JsonObject
-    ) {
-
-        disposable.add(
-            authAPIService.signIn(payload)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
-                    override fun onSuccess(localId: JsonObject) {
-
-                        disposable.add(
-                            postAPIService.getAccountInfo(localId.get("localId").asString)
-                                .subscribeOn(Schedulers.newThread())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
-                                    override fun onSuccess(accountInfo: JsonObject) {
-                                        val action =
-                                            AuthFragmentDirections.actionLoginFragmentToFeedFragment(
-                                                localId.get("localId").asString,
-                                                accountInfo.get("accountName").asString,
-                                                accountInfo.get("accountImageUrl").asString
-                                            )
-                                        Navigation.findNavController(view).navigate(action)
-                                    }
-
-                                    override fun onError(e: Throwable) {
-                                        e.printError()
-                                    }
-
-                                })
-                        )
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
                         e.showErrorToUser(view.context)
                     }
                 })

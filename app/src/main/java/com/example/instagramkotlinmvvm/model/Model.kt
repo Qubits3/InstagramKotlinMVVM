@@ -1,16 +1,18 @@
 package com.example.instagramkotlinmvvm.model
 
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity
+@Entity(tableName = "post")
 data class Post(
-    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "postUuid")
     @SerializedName("postUuid")
-    var postUuid: String?,
+    var postUuid: String,
 
     @ColumnInfo(name = "postAccountName")
     @SerializedName("postAccountName")
@@ -35,10 +37,11 @@ data class Post(
 
 @Entity
 data class Auth(
-    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "userUID")
     @SerializedName("userUID")
-    var userUID: String?,
+    var userUID: String,
 
     @ColumnInfo(name = "accountName")
     @SerializedName("accountName")

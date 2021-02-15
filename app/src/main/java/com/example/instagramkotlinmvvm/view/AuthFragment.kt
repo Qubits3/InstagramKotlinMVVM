@@ -60,6 +60,7 @@ class AuthFragment : Fragment() {
 
         viewModel.signIn(view, jsonObject)
         //
+
     }
 
     private fun signUp(view: View) {

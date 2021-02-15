@@ -1,6 +1,7 @@
 package com.example.instagramkotlinmvvm.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +9,7 @@ import com.example.instagramkotlinmvvm.R
 import com.example.instagramkotlinmvvm.databinding.ItemPostBinding
 import com.example.instagramkotlinmvvm.model.Post
 
-class PostAdapter(val postList: ArrayList<Post>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter(private val postList: ArrayList<Post>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     class PostViewHolder(var view: ItemPostBinding) : RecyclerView.ViewHolder(view.root)
 

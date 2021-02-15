@@ -75,7 +75,7 @@ class FeedFragment : Fragment() {
         postList.adapter = postAdapter
 
         dataBinding.swipeRefreshLayout.setOnRefreshListener {
-
+            feedViewModel.refreshFromAPI()
         }
 
         val database = FirebaseDatabase.getInstance().reference
@@ -84,7 +84,7 @@ class FeedFragment : Fragment() {
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 snapshot.print()
-                feedViewModel.getPosts()
+                feedViewModel.refreshFromAPI()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -102,6 +102,10 @@ class FeedFragment : Fragment() {
             posts?.let {
                 postAdapter.updatePostList(posts)
             }
+        })
+
+        feedViewModel.isDownloading.observe(viewLifecycleOwner, { isDownloading ->
+            dataBinding.swipeRefreshLayout.isRefreshing = isDownloading
         })
     }
 }
