@@ -13,6 +13,7 @@ import com.example.instagramkotlinmvvm.databinding.FragmentFeedBinding
 import com.example.instagramkotlinmvvm.util.print
 import com.example.instagramkotlinmvvm.viewmodel.AuthViewModel
 import com.example.instagramkotlinmvvm.viewmodel.FeedViewModel
+import com.example.instagramkotlinmvvm.viewmodel.PostViewModel
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_feed.*
 
@@ -21,6 +22,7 @@ class FeedFragment : Fragment() {
 
     private lateinit var feedViewModel: FeedViewModel
     private lateinit var authViewModel: AuthViewModel
+    private lateinit var postViewModel: PostViewModel
     private lateinit var dataBinding: FragmentFeedBinding
     private val postAdapter = PostAdapter(arrayListOf())
 
@@ -70,6 +72,11 @@ class FeedFragment : Fragment() {
 
         feedViewModel = ViewModelProviders.of(this).get(FeedViewModel::class.java)
         authViewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        postViewModel = ViewModelProviders.of(this).get(PostViewModel::class.java)
+
+
+        postViewModel.getDatabase()
+
 
         postList.layoutManager = LinearLayoutManager(context)
         postList.adapter = postAdapter

@@ -5,7 +5,7 @@
 
         <variable
             name="account"
-            type="com.example.instagramkotlinmvvm.model.Auth" />
+            type="com.example.instagramkotlinmvvm.model.Account" />
 
         <variable
             name="post"

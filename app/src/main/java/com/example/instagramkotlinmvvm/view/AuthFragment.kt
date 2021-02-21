@@ -52,7 +52,7 @@ class AuthFragment : Fragment() {
         dataBinding.authImageView.setOnClickListener {
             selectImage(it)
         }
-
+/*
         // AUTO SIGN IN
         val payload =
             "{\"email\":\"metin.1464@gmail.com\",\"password\":\"123456\",\"returnSecureToken\":true}"
@@ -60,6 +60,15 @@ class AuthFragment : Fragment() {
 
         viewModel.signIn(view, jsonObject)
         //
+*/
+        // AUTO SIGN IN
+        val payload =
+            "{\"email\":\"metin.557@hotmail.com\",\"password\":\"123456\",\"returnSecureToken\":true}"
+        val jsonObject = JsonParser().parse(payload).asJsonObject
+
+        viewModel.signIn(view, jsonObject)
+        //
+
 
     }
 

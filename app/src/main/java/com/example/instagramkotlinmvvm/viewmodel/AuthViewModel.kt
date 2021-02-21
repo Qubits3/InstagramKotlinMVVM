@@ -4,7 +4,7 @@ import android.app.Application
 import android.net.Uri
 import android.view.View
 import androidx.navigation.Navigation
-import com.example.instagramkotlinmvvm.model.Auth
+import com.example.instagramkotlinmvvm.model.Account
 import com.example.instagramkotlinmvvm.services.AuthAPIService
 import com.example.instagramkotlinmvvm.services.PostAPIService
 import com.example.instagramkotlinmvvm.util.print
@@ -19,8 +19,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.UnknownHostException
 import java.util.*
 
 class AuthViewModel(application: Application) : BaseViewModel(application) {
@@ -103,9 +101,9 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
         )
     }
 
-    private fun uploadAccountInfo(userUID: String, auth: Auth) {
+    private fun uploadAccountInfo(userUID: String, account: Account) {
         disposable.add(
-            postAPIService.uploadAccountInfo(userUID, auth)
+            postAPIService.uploadAccountInfo(userUID, account)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<JsonObject>() {
@@ -140,7 +138,7 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
                         launch {
                             uploadAccountInfo(
                                 t.get("localId").asString,
-                                Auth(t.get("localId").asString, accountName, accountImageUrl, email)
+                                Account(t.get("localId").asString, accountName, accountImageUrl, email)
                             )
                         }.invokeOnCompletion {
                             val action =

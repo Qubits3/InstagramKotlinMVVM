@@ -1,5 +1,6 @@
 package com.example.instagramkotlinmvvm.services
 
+import com.example.instagramkotlinmvvm.util.Util.AUTH_BASE_URL
 import com.google.gson.JsonObject
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -8,11 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthAPIService {
 
-    //BASE URL -> https://www.googleapis.com/identitytoolkit/v3/
-
-    private var BASE_URL = "https://www.googleapis.com/identitytoolkit/v3/"
     private val api = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(AUTH_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()

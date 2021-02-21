@@ -12,6 +12,14 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.HttpException
 
+object Util {
+    const val POST_BASE_URL = "https://instagramkotlinmvvm-default-rtdb.firebaseio.com/"
+    const val AUTH_BASE_URL = "https://www.googleapis.com/identitytoolkit/v3/"
+
+    const val AUTH_KEY = "AIzaSyCuD6NqXjAcZLDgESUg-pZ0NwlUSfdV8LA"
+    const val POST_KEY = "9Zr3KR7bYz4tXTxsEATCGq8jDcAdpmVpiR3a7Z9R"
+}
+
 fun Any?.print(prefix: String = ""): Any? {
     println("$prefix $this")
     return this

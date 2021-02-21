@@ -37,11 +37,9 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableObserver<JsonObject>() {
                     override fun onNext(database: JsonObject) {
                         database.keySet()
-                            .forEach { userUID ->                              //all database
-                                val accountInfoAndPosts =
-                                    database.get(userUID).asJsonObject    //userUID children
-                                val postsDB =
-                                    accountInfoAndPosts.get("posts").asJsonObject    //posts children
+                            .forEach { userUID ->                                               //all database
+                                val accountInfoAndPosts = database.get(userUID).asJsonObject    //userUID children
+                                val postsDB = accountInfoAndPosts.get("posts")?.asJsonObject    //posts children
                                 postsDB?.let {
                                     postsDB.keySet().forEach { postUUID -> // Get UUIDs of the posts
                                         val post = postsDB.get(postUUID).asJsonObject
